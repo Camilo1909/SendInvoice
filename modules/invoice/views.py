@@ -6,6 +6,10 @@ from .models import Invoice
 
 # Create your views here.
 
+def invoice_list(request):
+    invoices = Invoice.objects.all()
+    return render(request,"invoice_list.html", {"invoices":invoices} )
+
 def sendInvoice(request):
     account = Account.getAccount(request.user)
     if request.method == 'POST':

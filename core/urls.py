@@ -22,5 +22,6 @@ urlpatterns = [
     path("", views.home, name="home"),
     path('admin/', admin.site.urls),
     path('auth/', include('modules.auths.urls')),
-    path('invoice/', include('modules.invoice.urls'))
+    path('invoice/', include('modules.invoice.urls')),
+    path('base/', include('modules.base.urls'))
 ]
