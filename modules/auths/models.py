@@ -32,8 +32,8 @@ class StatusAccount(models.Model):
 
 class Account(AbstractUser):
     phone_number = models.CharField(verbose_name="Numero de telefono")
-    status = models.ForeignKey(StatusAccount, verbose_name="Estado", on_delete=models.PROTECT)
-    roles = models.ForeignKey(Role, verbose_name="Rol", on_delete=models.PROTECT)
+    status = models.ForeignKey(StatusAccount, verbose_name="Estado", on_delete=models.PROTECT, default=1)
+    roles = models.ManyToManyField(Role, verbose_name="Rol")
 
     groups = models.ManyToManyField(
         Group,

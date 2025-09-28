@@ -18,9 +18,9 @@ class Invoice(models.Model):
     def save(self, *args, **kwargs):
         if not self.code:
             today = timezone.now().date()
-            count = Invoice.objects.filter(client=self.client, created_at=today).count() + 1
+            count = Invoice.objects.filter(client=self.client, created_at__date=today).count() + 1
             self.code = f"{self.client.phone_number}{today.strftime('%Y%m%d')}{count:03d}"
-        super.save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Factura"

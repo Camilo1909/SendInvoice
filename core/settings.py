@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 MODULES = [
     "modules.auths.apps.AuthsConfig",
     "modules.base.apps.BaseConfig",
-    "modules.invoice.apps.InvoiceConfig"
+    "modules.invoice.apps.InvoiceConfig",
+    "modules.menu.apps.MenuConfig"
 ]
 
 INITIAL_APP = [
@@ -75,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'modules.menu.context_processors.menu_items',
             ],
         },
     },
@@ -100,6 +102,9 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'auths.Account'
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {

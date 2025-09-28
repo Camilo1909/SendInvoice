@@ -1,0 +1,12 @@
+<!-- Botón hamburguesa siempre visible para probar -->
+<button id="menu-toggle" class="btn btn-outline-dark position-fixed top-0 start-0 m-3 z-3">
+    <span id="menu-icon">☰</span>
+</button>
+
+<nav id="menu-items" class="offcanvas-menu position-fixed top-0 start-0 h-100 bg-dark text-white p-4 d-flex flex-column gap-3">
+    {% for item in menu_items %}
+        <a href="{{ item.url }}" class="text-white text-decoration-none">{{ item.name }}</a>
+    {% empty %}
+        <span class="text-white">No hay opciones disponibles</span>
+    {% endfor %}
+</nav>

@@ -1,0 +1,32 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}Nueva Factura{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-lg p-4 mx-auto" style="max-width: 500px;">
+        <h3 class="text-center mb-4">Nueva Factura</h3>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                {{ form.phone_number.label_tag }}
+                {{ form.phone_number }}
+            </div>
+
+            <div id="drop-area" class="border border-2 border-dashed rounded p-4 text-center bg-light mb-3">
+                <p class="mb-2">Arrastra tu factura aquí, haz clic o pega la imagen (Ctrl+V)</p>
+                <img id="preview" src="" alt="Vista previa" class="img-fluid d-none rounded">
+            </div>
+
+            {{ form.img_invoice }}
+
+            <button type="submit" class="btn btn-primary w-100">Enviar</button>
+        </form>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{% static 'js/invoice_upload.js' %}"></script>
+    </div>
+</div>
+{% endblock %}
