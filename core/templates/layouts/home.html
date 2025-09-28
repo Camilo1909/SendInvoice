@@ -1,0 +1,113 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Inicio - Send Facturep{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero d-flex align-items-center">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 text-white">
+        <h1 class="display-5 fw-bold mb-3">Bienvenido a Send Facture</h1>
+        <p class="lead mb-4">Gestiona y envía facturas a tus clientes de forma rápida y segura usando WhatsApp API.</p>
+        <a class="btn btn-primary btn-lg me-2">Iniciar Sesión</a>
+        <a href="#features" class="btn btn-outline-light btn-lg">Conocer más</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Características -->
+<section id="features"class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Características principales</h2>
+        <div class="row text-center">
+            <div class="col-md-4 mb-4" data-aos="fade-up">
+                <div class="card h-100 shadow-sm hover-card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-robot"></i> Automatización</h5>
+                        <p class="card-text">Envía facturas automáticamente a tus clientes sin intervención manual.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card h-100 shadow-sm hover-card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-kanban"></i> Control Total</h5>
+                        <p class="card-text">Lleva el registro de todas tus facturas y clientes en un solo lugar.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card h-100 shadow-sm hover-card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-shield-lock"></i> Seguridad</h5>
+                        <p class="card-text">Tus datos y los de tus clientes se almacenan de manera segura en la base de datos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="benefits-section py-5">
+  <div class="container py-5">
+    <h2 class="text-center mb-5 text-white">Beneficios de usar nuestra App</h2>
+    <div class="row text-center g-4">
+      <!-- Card 1 -->
+      <div class="col-md-3">
+        <div class="card-body data-aos="fade-up">
+            <div class="card h-100 shadow hover-card">
+                <div class="card-body">
+                    <i class="bi bi-clock-history display-4 mb-3 text-primary"></i>
+                    <h5 class="card-title">Ahorro de tiempo</h5>
+                    <p class="card-text">Automatiza el envío de facturas y reduce tareas manuales.</p>
+                </div>
+            </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="col-md-3">
+        <div class="card-body data-aos="fade-up" data-aos-delay="100">
+            <div class="card h-100 shadow hover-card">
+                <div class="card-body">
+                    <i class="bi bi-check-circle-fill display-4 mb-3 text-success"></i>
+                    <h5 class="card-title">Reducción de errores</h5>
+                    <p class="card-text">Minimiza errores manuales y control total de tus clientes.</p>
+                </div>
+            </div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="col-md-3">
+        <div class="card-body" data-aos="fade-up" data-aos-delay="200">
+            <div class="card h-100 shadow hover-card">
+                <div class="card-body">
+                    <i class="bi bi-whatsapp display-4 mb-3 text-success"></i>
+                    <h5 class="card-title">Integración WhatsApp</h5>
+                    <p class="card-text">Envía facturas directamente a los clientes por WhatsApp.</p>
+                </div>
+            </div>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="col-md-3">
+            <div class="card-body" data-aos="fade-up" data-aos-delay="300">
+                <div class="card h-100 shadow hover-card">
+                    <div class="card-body">
+                        <i class="bi bi-bar-chart-fill display-4 mb-3 text-primary"></i>
+                        <h5 class="card-title">Control completo</h5>
+                        <p class="card-text">Lleva el registro completo de facturas y clientes en un solo lugar.</p>
+                    </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

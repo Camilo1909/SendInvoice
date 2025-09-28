@@ -48,6 +48,20 @@ class Account(AbstractUser):
         verbose_name="permisos de usuario"
     )
 
+    @staticmethod
+    def getAccount(user):
+        if type(user) == str:
+            username = user
+        else:
+            username = user.username
+        
+        try:
+            account = Account.objects.get(username = username)
+        except:
+            account = None
+        
+        return account
+
     @property
     def fullname(self):
         return self.get_full_name()

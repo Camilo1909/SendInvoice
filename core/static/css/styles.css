@@ -1,0 +1,41 @@
+/* Hero */
+.hero {
+    height: 80vh;
+    background: linear-gradient(135deg,#007bff,#00c6ff);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+}
+/* Gradiente de fondo de la sección */
+.benefits-section {
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    position: relative;
+    z-index: 0;
+    padding: 60px 0;
+}
+
+/* Cards semi-transparentes para que se vea el gradiente */
+.card {
+    background-color: rgba(255, 255, 255, 0.9); /* semi-transparente */
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1; /* sobre el gradiente */
+}
+
+/* Hover effect */
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+}
+
+/* Títulos y textos de cards */
+.card-title, .card-text {
+    color: #000; /* contraste legible con fondo semi-transparente */
+}
+
+/* Iconos dentro de cards */
+.card i {
+    display: block;
+}
