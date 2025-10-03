@@ -9,11 +9,12 @@ Este endpoint verifica:
 Docker HEALTHCHECK lo usa para verificar el contenedor
 """
 
-from django.http import JsonResponse
-from django.db import connection
-from django.views.decorators.http import require_GET
-from django.views.decorators.csrf import csrf_exempt
 import logging
+
+from django.db import connection
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
 
 logger = logging.getLogger(__name__)
 
@@ -26,20 +27,20 @@ def health_check(request):
     Retorna 200 si todo está OK
     """
     status = {
-        'status': 'healthy',
-        'django': 'ok',
+        "status": "healthy",
+        "django": "ok",
     }
-    
+
     # Verificar conexión a base de datos
     try:
         connection.ensure_connection()
-        status['database'] = 'ok'
+        status["database"] = "ok"
     except Exception as e:
         logger.error(f"Health check DB failed: {e}")
-        status['status'] = 'unhealthy'
-        status['database'] = 'error'
+        status["status"] = "unhealthy"
+        status["database"] = "error"
         return JsonResponse(status, status=503)
-    
+
     return JsonResponse(status, status=200)
 
 
@@ -50,35 +51,33 @@ def readiness_check(request):
     Readiness check (listo para recibir tráfico)
     Más estricto que health_check
     """
-    checks = {
-        'status': 'ready',
-        'checks': {}
-    }
-    
+    checks = {"status": "ready", "checks": {}}
+
     # Check 1: Base de datos
     try:
         connection.ensure_connection()
-        checks['checks']['database'] = 'ok'
+        checks["checks"]["database"] = "ok"
     except Exception as e:
         logger.error(f"Readiness DB check failed: {e}")
-        checks['status'] = 'not_ready'
-        checks['checks']['database'] = str(e)
+        checks["status"] = "not_ready"
+        checks["checks"]["database"] = str(e)
         return JsonResponse(checks, status=503)
-    
+
     # Check 2: Verificar que migraciones están aplicadas
     try:
         from django.db.migrations.executor import MigrationExecutor
+
         executor = MigrationExecutor(connection)
         plan = executor.migration_plan(executor.loader.graph.leaf_nodes())
         if plan:
-            checks['status'] = 'not_ready'
-            checks['checks']['migrations'] = 'pending'
+            checks["status"] = "not_ready"
+            checks["checks"]["migrations"] = "pending"
             return JsonResponse(checks, status=503)
-        checks['checks']['migrations'] = 'ok'
+        checks["checks"]["migrations"] = "ok"
     except Exception as e:
         logger.error(f"Readiness migration check failed: {e}")
-        checks['checks']['migrations'] = str(e)
-    
+        checks["checks"]["migrations"] = str(e)
+
     return JsonResponse(checks, status=200)
 
 
@@ -89,4 +88,4 @@ def liveness_check(request):
     Liveness check (proceso está vivo)
     Kubernetes lo usa para decidir si reiniciar el pod
     """
-    return JsonResponse({'status': 'alive'}, status=200)
+    return JsonResponse({"status": "alive"}, status=200)

@@ -1,6 +1,7 @@
-from modules.base.models import Client
 from django.db import models
 from django.utils import timezone
+
+from modules.base.models import Client
 
 
 class TypeInvoice(models.Model):
@@ -17,11 +18,18 @@ class TypeInvoice(models.Model):
         ordering = ["name"]
         app_label = "invoice"
 
+
 class Invoice(models.Model):
     client = models.ForeignKey(Client, verbose_name="Cliente", null=False, on_delete=models.PROTECT)
-    code = models.CharField(verbose_name="Codigo",unique=True, blank=True)
+    code = models.CharField(verbose_name="Codigo", unique=True, blank=True)
     img_invoice = models.ImageField(verbose_name="Imagen de la factura", blank=False)
-    type = models.ForeignKey(TypeInvoice, verbose_name="Concepto de la factura", null=False, blank=False, on_delete=models.PROTECT)
+    type = models.ForeignKey(
+        TypeInvoice,
+        verbose_name="Concepto de la factura",
+        null=False,
+        blank=False,
+        on_delete=models.PROTECT,
+    )
 
     created_by = models.CharField(verbose_name="Creado por")
     created_at = models.DateTimeField(verbose_name="Fecha de creacion", auto_now_add=True)
