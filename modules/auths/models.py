@@ -74,6 +74,7 @@ class Account(AbstractUser):
             account = Account.objects.get(username=username)
         except Exception as e:
             account = None
+            print(e)
 
         return account
 
