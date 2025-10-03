@@ -16,6 +16,11 @@
                 {{ form.phone_number }}
             </div>
 
+            <div class="mb-3">
+                {{ form.type.label_tag }}
+                {{ form.type }}
+            </div>
+
             <div id="drop-area" class="border border-2 border-dashed rounded p-4 text-center bg-light mb-3">
                 <p class="mb-2">Arrastra tu factura aquí, haz clic o pega la imagen (Ctrl+V)</p>
                 <img id="preview" src="" alt="Vista previa" class="img-fluid d-none rounded">

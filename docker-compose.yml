@@ -1,0 +1,255 @@
+# ============================================
+# DOCKER COMPOSE - SendInvoice
+# Ambiente de desarrollo local
+# ============================================
+version: '3.9'
+
+# ============================================
+# NETWORKS: Redes virtuales privadas
+# ============================================
+networks:
+  sendinvoice-network:
+    driver: bridge
+    # Bridge: Crea red privada entre contenedores
+    # Los contenedores pueden comunicarse por nombre
+
+# ============================================
+# VOLUMES: Almacenamiento persistente
+# ============================================
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  static_volume:
+  media_volume:
+  pgadmin_data:
+
+# ============================================
+# SERVICES: Contenedores de la aplicación
+# ============================================
+services:
+  
+  # ------------------------------------------
+  # Servicio 1: PostgreSQL Database
+  # ------------------------------------------
+  db:
+    image: postgres:17-alpine
+    # Alpine: Versión minimalista (40MB vs 300MB)
+    
+    container_name: sendinvoice_postgres
+    
+    restart: unless-stopped
+    # Política de reinicio:
+    # unless-stopped: Reinicia siempre, excepto si lo detienes manualmente
+    
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Monta volumen persistente en directorio de datos de Postgres
+      
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      # (Opcional) Script SQL que corre al crear la BD
+      # :ro = read-only
+    
+    environment:
+      # Variables de PostgreSQL
+      POSTGRES_DB: ${DB_NAME:-sendinvoice_db}
+      # Sintaxis ${VAR:-default}:
+      # - Intenta leer DB_NAME del .env
+      # - Si no existe, usa "sendinvoice_db"
+      
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+      # Codificación UTF-8 para soportar caracteres especiales
+      
+      PGDATA: /var/lib/postgresql/data/pgdata
+      # Subdirectorio para datos (mejor organización)
+    
+    ports:
+      - "${DB_PORT:-5432}:5432"
+      # Mapeo: puerto_host:puerto_contenedor
+      # Permite conectar pgAdmin desde Windows a localhost:5432
+    
+    networks:
+      - sendinvoice-network
+    
+    healthcheck:
+      # Verifica que PostgreSQL está listo para conexiones
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-sendinvoice_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+      # Docker espera este check antes de marcar servicio como "healthy"
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        # Limita logs a 10MB x 3 archivos = 30MB máximo
+  
+  # ------------------------------------------
+  # Servicio 2: Django Application
+  # ------------------------------------------
+  web:
+    build:
+      context: .
+      # Contexto: directorio raíz del proyecto
+      
+      dockerfile: Dockerfile
+      
+      target: builder
+      # En desarrollo, usamos stage "builder"
+      # Tiene más herramientas (útil para pip install on-the-fly)
+      
+      args:
+        DJANGO_ENV: development
+        # Argumento pasado al Dockerfile
+    
+    container_name: sendinvoice_web
+    
+    restart: unless-stopped
+    
+    command: python manage.py runserver 0.0.0.0:8000
+    # Sobrescribe CMD del Dockerfile
+    # runserver: Solo desarrollo (tiene auto-reload)
+    # En producción, Dockerfile usa gunicorn
+    
+    volumes:
+      - .:/app
+      # Monta TODO el código fuente
+      # Hot reload: Cambios en archivos se reflejan inmediatamente
+      
+      - /app/venv
+      # Excluir venv del volumen (evita conflictos)
+      
+      - /app/__pycache__
+      # Excluir cache de Python
+      
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    
+    ports:
+      - "${WEB_PORT:-8000}:8000"
+      # Accede a Django en http://localhost:8000
+    
+    env_file:
+      - .env.docker
+      # ← ESPECIFICADO: Usa .env.docker en lugar de .env por defecto
+    
+    environment:
+      # Variables adicionales (sobrescriben .env si hay duplicados)
+      DJANGO_SETTINGS_MODULE: core.settings
+      
+      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@db:5432/${DB_NAME:-sendinvoice_db}
+      # Nota importante: Usamos "db" (nombre del servicio), NO "localhost"
+      # Docker DNS resuelve "db" a la IP del contenedor postgres
+      
+      REDIS_URL: redis://redis:6379/0
+      
+      DEBUG: ${DEBUG:-True}
+      # En desarrollo: True, En producción: False
+    
+    depends_on:
+      db:
+        condition: service_healthy
+      # Django NO inicia hasta que PostgreSQL esté healthy
+      
+      redis:
+        condition: service_healthy
+    
+    networks:
+      - sendinvoice-network
+    
+    stdin_open: true
+    # Permite input interactivo (útil para ipdb debugger)
+    
+    tty: true
+    # Habilita pseudo-TTY (necesario para ipdb)
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  
+  # ------------------------------------------
+  # Servicio 3: Redis (Cache & Celery broker)
+  # ------------------------------------------
+  redis:
+    image: redis:7-alpine
+    # Redis Alpine: Solo 8MB
+    
+    container_name: sendinvoice_redis
+    
+    restart: unless-stopped
+    
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    
+    volumes:
+      - redis_data:/data
+      # Persiste cache (opcional, depende de tu uso)
+    
+    command: redis-server --appendonly yes
+    # --appendonly yes: Persistencia de datos (AOF)
+    # Garantiza que cache sobrevive reinicios
+    
+    networks:
+      - sendinvoice-network
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+  
+  # ------------------------------------------
+  # Servicio 4: pgAdmin (GUI para PostgreSQL)
+  # ------------------------------------------
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    # Interface web para gestionar PostgreSQL
+    
+    container_name: sendinvoice_pgadmin
+    
+    restart: unless-stopped
+    
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@sendinvoice.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      # False: Modo desktop (no requiere login cada vez)
+    
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+      # Accede a pgAdmin en http://localhost:5050
+    
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      # Persiste configuraciones y conexiones guardadas
+    
+    networks:
+      - sendinvoice-network
+    
+    depends_on:
+      - db
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+
+   

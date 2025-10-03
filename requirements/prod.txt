@@ -1,0 +1,41 @@
+# ============================================
+# DEPENDENCIAS DE PRODUCCIÓN - SendInvoice
+# Específicas para ambiente productivo
+# ============================================
+
+# Incluir dependencias base
+-r base.txt
+
+# Error Tracking & Monitoring
+sentry-sdk==1.40.0
+# Monitoreo de errores en tiempo real
+
+# Performance & Caching
+django-redis==5.4.0
+# Backend de cache con Redis
+
+redis==5.0.1
+# Cliente de Redis
+
+# AWS Integration (para cuando uses AWS)
+boto3==1.34.34
+# SDK de AWS para S3, etc.
+
+django-storages==1.14.2
+# Backend de storage para S3
+
+# Security Enhancements
+django-ratelimit==4.1.0
+# Rate limiting para APIs
+
+# Database Connection Pooling
+psycopg2==2.9.9
+# Versión compilada (mejor performance que -binary)
+
+# Health Checks
+django-health-check==3.18.1
+# Endpoints de health check
+
+# Logging
+python-json-logger==2.0.7
+# Logs estructurados en JSON

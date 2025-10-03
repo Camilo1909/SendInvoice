@@ -1,7 +1,8 @@
 $(document).ready(function() {
-    $('#menu-toggle').click(function() {
-        $('#menu-items').toggleClass('show'); // Muestra/oculta menú
-        const icon = $('#menu-icon');
-        icon.text(icon.text() === '☰' ? '✕' : '☰'); // Cambia icono
+       
+    // Opcional: agregar efectos adicionales
+    $('.sidebar-item').on('click', function() {
+        $('.sidebar-item').removeClass('active');
+        $(this).addClass('active');
     });
 });

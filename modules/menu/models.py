@@ -7,23 +7,30 @@ from django.db import models
 class MenuItem(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nombre")
     url = models.CharField(max_length=200, verbose_name="URL")
-    roles = models.ManyToManyField(Role, verbose_name="Roles", blank=True) 
+    roles = models.ManyToManyField(Role, verbose_name="Roles", blank=True)
+    icon = models.CharField(max_length=100, verbose_name="Icono", blank=True, null=True) 
     order = models.PositiveIntegerField(verbose_name="Ordén", default=0)  # Para ordenar los items
     is_active = models.BooleanField(default=True)  # Para desactivar sin eliminar
 
     @classmethod
     def get_items_for_user(cls, request):
-        account = Account.getAccount(request.user)
+        """
+        Devuelve los ítems de menú visibles para el usuario autenticado y su rol.
+        """
         items = cls.objects.filter(is_active=True)
+
+        account = Account.getAccount(request.user) if request.user.is_authenticated else None
         
-        if account and account.is_authenticated:
-            user_roles = account.roles.all()  # Suponiendo que user.roles es ManyToManyField
-            items = items.filter(models.Q(roles__in=user_roles) | models.Q(roles__isnull=True)).distinct()
+        if account:
+            user_roles = account.rol.all()
+            items = items.filter(
+                models.Q(roles__in=user_roles) | models.Q(roles__isnull=True)
+            ).distinct()
         else:
-            # Solo items públicos
+            # Solo ítems públicos (sin roles asignados)
             items = items.filter(roles__isnull=True)
-        
-        return items
+
+        return items.order_by("order")
 
     class Meta:
         ordering = ['order']

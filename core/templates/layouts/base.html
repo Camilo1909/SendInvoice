@@ -13,6 +13,10 @@
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     </head>
     <body>
+        {% if request.resolver_match.url_name != 'home' and request.resolver_match.url_name != 'login' %}
+            {% include 'include/navbar.html' %}
+            {% include 'include/header.html' %}
+        {% endif %}
         <div class="container mt-4">
             {% include 'include/messages.html' %}
             {% block content %}{% endblock %}

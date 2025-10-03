@@ -1,8 +1,9 @@
 body {
-    /* Gradiente que quieres en toda la página */
     background: linear-gradient(135deg, #007bff, #00c6ff);
-    min-height: 100vh; /* Asegura que cubra todo el viewport */
-    color: #fff; /* Ajusta el color del texto si lo necesitas */
+    min-height: 100vh;
+    color: #fff;
+    margin: 0;
+    padding: 0;
 }
 
 /* Hero */
@@ -15,36 +16,170 @@ body {
     text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
 }
 
-/* Cards semi-transparentes para que se vea el gradiente */
+/* Cards semi-transparentes */
 .card {
-    background-color: rgba(255, 255, 255, 0.9); /* semi-transparente */
+    background-color: rgba(255, 255, 255, 0.9);
     border: none;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    z-index: 1; /* sobre el gradiente */
+    z-index: 1;
 }
 
-/* Hover effect */
 .hover-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 25px rgba(0,0,0,0.2);
 }
 
-/* Títulos y textos de cards */
 .card-title, .card-text {
-    color: #000; /* contraste legible con fondo semi-transparente */
+    color: #000;
 }
 
 .content-wrapper {
-    min-height: calc(100vh - 100px); /* Ajusta si tienes navbar/footer */
+    min-height: calc(100vh - 100px);
     padding-top: 20px;
     padding-bottom: 20px;
+    margin-left: 80px; /* Espacio para el sidebar */
+    transition: margin-left 0.3s ease;
 }
 
-.offcanvas-menu.show {
-    transform: translateX(0); /* Muestra el menú */
-    z-index: 1100;
+/* SIDEBAR - Corregido el ID */
+#sidebar-menu {
+    background-color: #fff !important;
+    width: 60px;
+    transition: width 0.3s ease;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
-#menu-toggle {
-    z-index: 1050; /* Para que esté encima del menú */
+#sidebar-menu:hover {
+    width: 175px;
+}
+
+.sidebar-item {
+    color: #007bff !important;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    text-decoration: none !important;
+    border-radius: 8px;
+    margin: 5px 10px;
+}
+
+.sidebar-item:hover {
+    background-color: rgba(0, 123, 255, 0.1) !important;
+    color: #0056b3 !important;
+}
+
+.menu-text {
+    opacity: 0;
+    white-space: nowrap;
+    margin-left: 15px;
+    transition: opacity 0.3s ease;
+    color: #007bff;
+    font-weight: 500;
+}
+
+#sidebar-menu:hover .menu-text {
+    opacity: 1;
+}
+
+.sidebar-item i {
+    color: #007bff !important;
+    font-size: 1.3rem;
+    min-width: 25px;
+    text-align: center;
+}
+
+.portfolio-footer {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    border-top: 3px solid rgba(255, 255, 255, 0.1);
+    margin-top: auto; /* Para que siempre esté abajo */
+}
+
+.footer-brand {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.footer-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.footer-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #fff;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+}
+
+.social-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+.tech-badge {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 3px 8px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 2px;
+    display: inline-block;
+}
+
+/* Contenedor interno del footer centrado */
+.footer-content-wrapper {
+    display: inline-block;
+    text-align: left;
+    width: auto;
+    max-width: 100%;
+}
+
+/* Centrar el contenedor dentro de cada columna */
+.portfolio-footer .col-lg-3,
+.portfolio-footer .col-md-6 {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-see{
+    background-color: #2a5298;
+    border: #000000 1px;
+    transition: background 0.3s;
+}
+
+.btn-edit{
+    background-color: #007bff;
+    border: #000000 1px;
+    transition: background 0.3s;
+}
+
+.btn-txt{
+    color: white;
 }

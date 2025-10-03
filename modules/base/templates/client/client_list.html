@@ -3,20 +3,20 @@
 
 {% block content %}
 <div class="container mt-4 d-flex justify-content-center">
-    <div class="card shadow-lg rounded-3 border-0 w-75" style="max-width: 1000px;">
+    <div class="card shadow-lg rounded-3 border-0 w-100" style="max-width: 1100px;">
         <div class="card-header bg-primary text-white text-center">
-            <h4 class="mb-0">📋 Listado de Clientes</h4>
+            <h4 class="mb-0"><i class="bi bi-people-fill"></i> Listado de Clientes</h4>
         </div>
         <div class="card-body p-3">
             <div class="table-responsive">
                 <table class="table table-hover align-middle text-center table-sm mb-0">
                     <thead class="table-primary">
                         <tr>
-                            <th scope="col">📞 Teléfono</th>
-                            <th scope="col">👤 Nombre</th>
-                            <th scope="col">👥 Apellidos</th>
-                            <th scope="col">✉️ Correo</th>
-                            <th scope="col">⚙️ Acciones</th>
+                            <th scope="col"><i class="bi bi-telephone"></i> Teléfono</th>
+                            <th scope="col"><i class="bi bi-person"></i> Nombre</th>
+                            <th scope="col"><i class="bi bi-people"></i> Apellidos</th>
+                            <th scope="col"><i class="bi bi-envelope"></i> Correo</th>
+                            <th scope="col"><i class="bi bi-gear"></i> Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,18 +27,18 @@
                             <td>{{ client.last_name }}</td>
                             <td>{{ client.email }}</td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-info me-1">
-                                    <i class="bi bi-eye"></i> Ver
+                                <a href="#" class="btn btn-see me-1 text-white">
+                                    <i class="bi bi-eye btn-txt"></i> Ver
                                 </a>
-                                <a href="#" class="btn btn-sm btn-warning">
-                                    <i class="bi bi-pencil"></i> Editar
+                                <a href="#" class="btn btn-edit text-white">
+                                    <i class="bi bi-pencil btn-txt"></i> Editar
                                 </a>
                             </td>
                         </tr>
                         {% empty %}
                         <tr>
                             <td colspan="5" class="text-center text-muted">
-                                🚫 No hay clientes registrados.
+                                <i class="bi bi-x-circle"></i> No hay clientes registrados.
                             </td>
                         </tr>
                         {% endfor %}

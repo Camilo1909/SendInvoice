@@ -1,0 +1,53 @@
+# ============================================
+# DEPENDENCIAS DE DESARROLLO - SendInvoice
+# Solo para ambiente local
+# ============================================
+
+# Incluir dependencias base
+-r base.txt
+
+# Testing Framework
+pytest==7.4.4
+pytest-django==4.7.0
+pytest-cov==4.1.0
+factory-boy==3.3.0
+faker==22.0.0
+
+# Code Quality Tools
+black==24.1.1
+# Formateador de código (estándar de la industria)
+
+flake8==7.0.0
+# Linter (detecta errores de estilo)
+
+isort==5.13.2
+# Ordena imports automáticamente
+
+pylint==3.0.3
+# Análisis estático avanzado
+
+# Security Scanning
+bandit==1.7.6
+# Detecta vulnerabilidades de seguridad
+
+safety==3.0.1
+# Verifica vulnerabilidades en dependencias
+
+# Debugging
+ipdb==0.13.13
+# Debugger mejorado con IPython
+
+django-debug-toolbar==4.2.0
+# Toolbar para debugging en navegador
+
+# Database Tools
+django-seed==0.3.1
+# Generar datos de prueba
+
+# Development Server Enhancement
+werkzeug==3.0.1
+# Mejor server de desarrollo con auto-reload
+
+# Documentation
+Sphinx==7.2.6
+# Generador de documentación

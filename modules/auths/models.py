@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
+from modules.base.models import Company
 
 # Create your models here.
 
@@ -33,7 +34,8 @@ class StatusAccount(models.Model):
 class Account(AbstractUser):
     phone_number = models.CharField(verbose_name="Numero de telefono")
     status = models.ForeignKey(StatusAccount, verbose_name="Estado", on_delete=models.PROTECT, default=1)
-    roles = models.ManyToManyField(Role, verbose_name="Rol")
+    rol = models.ManyToManyField(Role, verbose_name="Rol")
+    company = models.ForeignKey(Company, verbose_name="Compañia", on_delete=models.CASCADE ,null=True, blank=True, related_name="accounts")
 
     groups = models.ManyToManyField(
         Group,

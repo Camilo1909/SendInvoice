@@ -1,10 +1,15 @@
 from django.contrib.auth import login, logout, authenticate
+from core.decorators import owner_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import LoginForm
 from .models import Account
 
 # Create your views here.
+
+def logout_app(request):
+    logout(request)
+    return redirect('home')
 
 def login_app(request):
     if request.method == 'POST':
@@ -26,3 +31,8 @@ def login_app(request):
     else:
         form = LoginForm()
     return render(request, 'login.html', {"form":form})
+
+@owner_required
+def users_list(request):
+    users = Account.objects.all()
+    return render(request, "user_list.html", {"users": users})

@@ -3,35 +3,44 @@ from modules.base.models import Client
 from django.shortcuts import render
 from .forms import InvoiceForm
 from .models import Invoice
+from core.decorators import owner_or_role_required
 
 # Create your views here.
 
+@owner_or_role_required('Admin')
 def invoice_list(request):
     invoices = Invoice.objects.all()
     return render(request,"invoice_list.html", {"invoices":invoices} )
 
+@owner_or_role_required('Admin')
 def sendInvoice(request):
     account = Account.getAccount(request.user)
     if request.method == 'POST':
         form =  InvoiceForm(request.POST)
+        print("1")
         if form.is_valid():
+            print("2")
             phone_number = form.cleaned_data["phone_number"]
             img_invoice = form.cleaned_data["img_invoice"]
+            type = form.cleaned_data["type"]
 
             try:
                 client =  Client.objects.get(phone_number= phone_number)
             except Client.DoesNotExist:
-                cliente = Client(
+                client = Client(
                     phone_number = phone_number,
                     created_by = account.username
                 )
-                client.save()
+                
             
             invoice = Invoice(
                 client = client,
                 img_invoice = img_invoice,
+                type = type,
                 created_by = account.username
             )
+        else:
+            print(form.errors)
     else:
         form = InvoiceForm()
 

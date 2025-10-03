@@ -1,0 +1,65 @@
+# ============================================
+# Evita copiar archivos innecesarios a la imagen
+# ============================================
+
+# Python runtime
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+*.pot
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Documentation
+docs/
+*.md
+LICENSE
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# OneDrive (para evitar archivos temporales)
+~$*
+*.tmp
