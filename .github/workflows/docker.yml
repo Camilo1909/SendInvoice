@@ -1,12 +1,15 @@
 name: Docker Build & Push
 
 on:
-  push:
-    branches: [ main ]
-    tags:
-      - 'v*'
-  pull_request:
-    branches: [ main ]
+  workflow_run:
+    workflows: ["CI Pipeline"]  # ← Espera a que CI termine
+    types:
+      - completed  # ← Solo corre cuando CI completa
+    branches:
+      - main
+
+  # Permitir trigger manual (útil para debugging)
+  workflow_dispatch:
 
 env:
   REGISTRY: docker.io
@@ -16,6 +19,8 @@ jobs:
   build:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
+    # Solo corre si CI pasó exitosamente
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: read
       packages: write
