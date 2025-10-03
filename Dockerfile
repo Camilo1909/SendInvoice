@@ -9,7 +9,7 @@
 FROM python:3.12-slim as builder
 
 # Metadatos
-LABEL maintainer="tu-email@ejemplo.com"
+LABEL maintainer="jcvargas1909@gmail.com"
 LABEL description="SendInvoice - Builder Stage"
 LABEL version="1.0"
 
@@ -49,7 +49,7 @@ RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel && \
 # ========================================
 FROM python:3.12-slim
 
-LABEL maintainer="tu-email@ejemplo.com"
+LABEL maintainer="jcvargas1909@gmail.com"
 LABEL description="SendInvoice - Runtime Stage"
 
 # ============================================
