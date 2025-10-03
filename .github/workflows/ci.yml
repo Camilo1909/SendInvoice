@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ main, deve ]
   pull_request:
-    branches: [ main, dev ]
+    branches: [ main, deve ]
 
 env:
   PYTHON_VERSION: '3.12'
@@ -89,8 +89,8 @@ jobs:
         DB_HOST: localhost
         DB_PORT: 5432
         SECRET_KEY: test-secret-key-for-ci
-        DEBUG: 'False'
-        ALLOWED_HOSTS: localhost,127.0.0.1
+        DEBUG: 'True'
+        ALLOWED_HOSTS: localhost,127.0.0.1,testserver
       run: |
         python manage.py migrate --noinput
 
@@ -102,8 +102,8 @@ jobs:
         DB_HOST: localhost
         DB_PORT: 5432
         SECRET_KEY: test-secret-key-for-ci
-        DEBUG: 'False'
-        ALLOWED_HOSTS: localhost,127.0.0.1
+        DEBUG: 'True'
+        ALLOWED_HOSTS: localhost,127.0.0.1,testserver
       run: |
         pytest --cov=. --cov-report=xml --cov-report=term
 
