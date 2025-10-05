@@ -121,7 +121,7 @@ COPY --chown=django:django . .
 # ============================================
 # COPIAR ENTRYPOINT
 # ============================================
-COPY entrypoint.sh /entrypoint.sh
+COPY scripts/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Cambiar al usuario no-root
