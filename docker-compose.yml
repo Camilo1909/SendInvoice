@@ -2,8 +2,6 @@
 # DOCKER COMPOSE - SendInvoice
 # Ambiente de desarrollo local
 # ============================================
-version: '3.9'
-
 # ============================================
 # NETWORKS: Redes virtuales privadas
 # ============================================

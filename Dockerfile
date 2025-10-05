@@ -118,6 +118,12 @@ COPY --from=builder /usr/local/bin/ /usr/local/bin/
 # --chown=django:django: El usuario django es propietario
 COPY --chown=django:django . .
 
+# ============================================
+# COPIAR ENTRYPOINT
+# ============================================
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Cambiar al usuario no-root
 USER django
 
