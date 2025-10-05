@@ -11,9 +11,9 @@ echo "🚀 Iniciando SendInvoice..."
 echo "======================================"
 
 # Esperar a que PostgreSQL esté listo
-echo "⏳ Esperando PostgreSQL..."
-while ! nc -z db 5432; do
-  sleep 0.5
+until PGPASSWORD=$DB_PASSWORD psql -h "${DB_HOST:-db}" -U "${DB_USER:-postgres}" -d "${DB_NAME:-sendinvoice_db}" -c '\q' 2>/dev/null; do
+  echo "PostgreSQL no está listo - esperando..."
+  sleep 2
 done
 echo "✅ PostgreSQL listo!"
 
