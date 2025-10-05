@@ -33,6 +33,11 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 # Desarrollo: ['localhost', '127.0.0.1']
 # Producción: ['tu-dominio.com']
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv())
+CSRF_TRUSTED_ORIGINS = config(
+    "CSRF_TRUSTED_ORIGINS",
+    default=f"http://{ALLOWED_HOSTS[0]}",
+    cast=Csv()
+)
 
 # ============================================
 # APPLICATION DEFINITION
