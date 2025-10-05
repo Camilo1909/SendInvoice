@@ -82,13 +82,14 @@ except Role.DoesNotExist:
 try:
     if not Account.objects.filter(is_superuser=True).exists():
         print("Creando superusuario por defecto...")
-        Account.objects.create_superuser(
+        user = Account.objects.create_superuser(
             username='Admin',
             email='admin@sendinvoice.com',
             password='AdminDatabase@',
-            role=role_owner,
-            state=state_active
         )
+        user.role = role_owner
+        user.state = state_active
+        user.save()
         print("✅ Superusuario creado: admin/admin123")
     else:
         print("✅ Superusuario ya existe")
