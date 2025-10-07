@@ -38,15 +38,6 @@ resource "aws_security_group" "ec2" {
     cidr_blocks = [var.my_ip]
   }
 
-  # Django dev server (8000) - temporal para pruebas
-  ingress {
-    description = "Django dev server"
-    from_port   = 8000
-    to_port     = 8000
-    protocol    = "tcp"
-    cidr_blocks = [var.my_ip]
-  }
-
   # Outbound Rules (salida) - permite TODO
   egress {
     description = "Allow all outbound"

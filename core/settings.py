@@ -183,9 +183,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ============================================
 if not DEBUG:
     # Security settings para producción
-    SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=False, cast=bool)
-    SESSION_COOKIE_SECURE = config("SESESSION_COOKIE_SECURE", default=False, cast=bool)
-    CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", default=False, cast=bool)
+    SECURE_PROXY_SSL_HEADER = (
+        ("HTTP_X_FORWARDED_PROTO", "https") if config("SECURE_PROXY_SSL_HEADER") == "True" else None
+    )
+    SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=True, cast=bool)
+    SESSION_COOKIE_SECURE = config("SESESSION_COOKIE_SECURE", default=True, cast=bool)
+    CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", default=True, cast=bool)
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = "DENY"
