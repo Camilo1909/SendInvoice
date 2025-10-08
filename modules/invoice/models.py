@@ -125,7 +125,7 @@ class Invoice(models.Model):
             self.code = f"{self.client.phone_number}{local_today.strftime('%Y%m%d')}{count:03d}"
 
             # Intentar guardar, en caso de colisión repetir
-            for attempt in range(5):
+            for attempt in range(100):
                 try:
                     super().save(*args, **kwargs)
                     return

@@ -7,6 +7,8 @@ from modules.base.models import Client
 from .forms import InvoiceForm
 from .models import Invoice
 
+from modules.services.models import WhatsAppService 
+
 # Create your views here.
 
 
@@ -34,6 +36,12 @@ def sendInvoice(request):
             invoice = Invoice(
                 client=client, img_invoice=img_invoice, type=type, created_by=account.username
             )
+            def send_whatsapp_hook():
+                WhatsAppService.send_invoice(
+                    phone_number=invoice.client.phone_number,
+                    image_url=invoice.img_invoice.url
+                )
+            invoice.on_saved = send_whatsapp_hook
             invoice.save()
 
         else:

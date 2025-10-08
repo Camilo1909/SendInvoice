@@ -56,6 +56,7 @@ MODULES = [
     "modules.base.apps.BaseConfig",
     "modules.invoice.apps.InvoiceConfig",
     "modules.menu.apps.MenuConfig",
+    "modules.services.apps.ServicesConfig",
 ]
 
 INITIAL_APP = [
@@ -185,6 +186,14 @@ STORAGES = {
 # DEFAULT PRIMARY KEY
 # ============================================
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ============================================
+# WHASTAPP API SETTINGS
+# ============================================
+
+WHATSAPP_API_TOKEN=config("WHATSAPP_API_TOKEN", default="")
+WHATSAPP_PHONE_ID=config("WHATSAPP_PHONE_ID", default="")
+WHATSAPP_API_URL=config("WHATSAPP_API_URL", default="https://graph.facebook.com/v22.0/{WHATSAPP_PHONE_ID}/messages").format(WHATSAPP_PHONE_ID=WHATSAPP_PHONE_ID)
 
 # ============================================
 # CONFIGURACIÓN ESPECÍFICA DE PRODUCCIÓN
