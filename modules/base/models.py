@@ -39,6 +39,10 @@ class Client(models.Model):
     updated_by = models.CharField(verbose_name="Actualizado por", blank=True, null=True)
     updated_at = models.DateTimeField(verbose_name="Fecha de actualizacion", auto_now_add=True)
 
+    @property
+    def fullname(self):
+        return f'{self.name} {self.last_names}'
+
     def __str__(self):
         return self.phone_number
 

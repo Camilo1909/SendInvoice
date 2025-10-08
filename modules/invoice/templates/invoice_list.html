@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4 d-flex justify-content-center">
+<div class="container mt-4 d-flex justify-content-center py-5">
     <div class="card shadow-lg rounded-3 border-0 w-100" style="max-width: 1100px;">
-        <div class="card-header bg-primary text-white text-center">
+        <div class="card-header bg-principal card-header text-white text-center">
             <h4 class="mb-0">
                 <i class="bi bi-receipt"></i> Listado de Facturas
             </h4>
@@ -24,13 +24,13 @@
                         {% for invoice in invoices %}
                         <tr>
                             <td>{{ invoice.code }}</td>
-                            <td>{{ invoice.client.get_fullname }}</td>
+                            <td>{{ invoice.client.phone_number }}</td>
                             <td>{{ invoice.created_at }}</td>
                             <td>
-                                <a href="#" class="btn btn-see me-1 text-white">
+                                <a href="#" class="btn btn-primary me-1 text-white">
                                     <i class="bi bi-eye btn-txt"></i> Ver
                                 </a>
-                                <a href="#" class="btn btn-edit text-white">
+                                <a href="#" class="btn btn-secondary text-white">
                                     <i class="bi bi-pencil btn-txt"></i> Editar
                                 </a>
                             </td>

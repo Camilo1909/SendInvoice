@@ -160,18 +160,26 @@ STATICFILES_DIRS = [BASE_DIR / "core" / "static"]
 # Directorio donde collectstatic recolecta archivos (producción)
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Whitenoise: Compresión y cache de archivos estáticos
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
-
 # ============================================
 # MEDIA FILES (Archivos subidos por usuarios)
 # ============================================
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Whitenoise: Compresión y cache de archivos estáticos
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {
+            "location": MEDIA_ROOT,
+            "base_url": MEDIA_URL,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 
 # ============================================
 # DEFAULT PRIMARY KEY

@@ -15,6 +15,6 @@ class InvoiceForm(forms.Form):
     img_invoice = forms.ImageField(
         label="Imagen de la factura",
         widget=forms.ClearableFileInput(
-            attrs={"class": "form-control d-none", "id": "invoice-image"}
+            attrs={"class": "form-control visually-hidden", "id": "invoice-image"}
         ),
     )

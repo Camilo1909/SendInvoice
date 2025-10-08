@@ -3,8 +3,7 @@ import os
 from PIL import Image
 
 
-def redimensionar_para_whatsapp(formato="horizontal", calidad=85):
-    ruta_imagen = r"C:\Users\kmilo\Downloads\factura ejemplo.jpg"
+def redimensionar_para_whatsapp(imagen,formato="cuadrada", calidad=85):
     """
     Redimensiona una imagen según los requisitos de WhatsApp Business API
     Args:
@@ -22,7 +21,7 @@ def redimensionar_para_whatsapp(formato="horizontal", calidad=85):
         raise ValueError("Formato debe ser 'cuadrada' o 'horizontal'")
 
     # Abrir imagen original
-    img = Image.open(ruta_imagen)
+    img = Image.open(imagen)
 
     # Convertir a RGB si es necesario (para PNGs con transparencia)
     if img.mode in ("RGBA", "LA", "P"):
@@ -61,7 +60,7 @@ def redimensionar_para_whatsapp(formato="horizontal", calidad=85):
     img_final.paste(img_redimensionada, (pos_x, pos_y))
 
     # Generar nombre de archivo de salida
-    nombre_base, extension = os.path.splitext(ruta_imagen)
+    nombre_base, extension = os.path.splitext(imagen)
     ruta_salida = f"{nombre_base}_whatsapp_{formato}.jpg"
 
     # Guardar optimizada

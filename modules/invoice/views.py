@@ -20,10 +20,8 @@ def invoice_list(request):
 def sendInvoice(request):
     account = Account.getAccount(request.user)
     if request.method == "POST":
-        form = InvoiceForm(request.POST)
-        print("1")
+        form = InvoiceForm(request.POST, request.FILES)
         if form.is_valid():
-            print("2")
             phone_number = form.cleaned_data["phone_number"]
             img_invoice = form.cleaned_data["img_invoice"]
             type = form.cleaned_data["type"]
@@ -37,6 +35,7 @@ def sendInvoice(request):
                 client=client, img_invoice=img_invoice, type=type, created_by=account.username
             )
             invoice.save()
+            
         else:
             print(form.errors)
     else:
