@@ -3,11 +3,10 @@ from django.shortcuts import render
 from core.decorators import owner_or_role_required
 from modules.auths.models import Account
 from modules.base.models import Client
+from modules.services.models import WhatsAppService
 
 from .forms import InvoiceForm
 from .models import Invoice
-
-from modules.services.models import WhatsAppService 
 
 # Create your views here.
 
@@ -36,11 +35,12 @@ def sendInvoice(request):
             invoice = Invoice(
                 client=client, img_invoice=img_invoice, type=type, created_by=account.username
             )
+
             def send_whatsapp_hook():
                 WhatsAppService.send_invoice(
-                    phone_number=invoice.client.phone_number,
-                    image_url=invoice.img_invoice.url
+                    phone_number=invoice.client.phone_number, image_url=invoice.img_invoice.url
                 )
+
             invoice.on_saved = send_whatsapp_hook
             invoice.save()
 

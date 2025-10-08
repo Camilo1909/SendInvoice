@@ -1,7 +1,10 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Invoice
+
 from modules.services.models import WhatsAppService
+
+from .models import Invoice
+
 
 @receiver(post_save, sender=Invoice)
 def send_invoice_whatsapp(sender, instance, created, **kwargs):

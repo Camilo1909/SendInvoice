@@ -6,4 +6,4 @@ class InvoiceConfig(AppConfig):
     name = "modules.invoice"
 
     def ready(self):
-        from . import signals 
+        from . import signals  # noqa: F401
