@@ -41,7 +41,7 @@ class Client(models.Model):
 
     @property
     def fullname(self):
-        return f'{self.name} {self.last_names}'
+        return f"{self.name} {self.last_names}"
 
     def __str__(self):
         return self.phone_number

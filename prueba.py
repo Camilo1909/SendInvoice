@@ -3,7 +3,7 @@ import os
 from PIL import Image
 
 
-def redimensionar_para_whatsapp(imagen,formato="cuadrada", calidad=85):
+def redimensionar_para_whatsapp(imagen, formato="cuadrada", calidad=85):
     """
     Redimensiona una imagen según los requisitos de WhatsApp Business API
     Args:

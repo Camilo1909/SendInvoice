@@ -1,13 +1,12 @@
-from django.db import IntegrityError, transaction
+import os
+from io import BytesIO
+
 from django.core.files.base import ContentFile
-from django.db.models.functions import Cast
-from django.db.models import DateField
+from django.db import IntegrityError, models
 from django.db.models import Func
 from django.utils import timezone
-from django.db import models
-from io import BytesIO
+
 from PIL import Image
-import os
 
 from modules.base.models import Client
 
@@ -28,13 +27,16 @@ class TypeInvoice(models.Model):
 
 
 class ToLocalDate(Func):
-    function = 'DATE'
+    function = "DATE"
     template = "DATE(timezone('America/Bogota', %(expressions)s))"
+
 
 class Invoice(models.Model):
     client = models.ForeignKey(Client, verbose_name="Cliente", null=False, on_delete=models.PROTECT)
     code = models.CharField(verbose_name="Codigo", unique=True, blank=True)
-    img_invoice = models.ImageField(upload_to="invoices/", verbose_name="Imagen de la factura", blank=False)
+    img_invoice = models.ImageField(
+        upload_to="invoices/", verbose_name="Imagen de la factura", blank=False
+    )
     type = models.ForeignKey(
         TypeInvoice,
         verbose_name="Concepto de la factura",
@@ -50,7 +52,7 @@ class Invoice(models.Model):
 
     def __str__(self):
         return self.code
-    
+
     @staticmethod
     def resize_for_whatsapp(image_file, filename, layout="square", quality=85):
         """
@@ -109,14 +111,14 @@ class Invoice(models.Model):
     def save(self, *args, **kwargs):
         if not self.code:
             local_today = timezone.localdate()  # Fecha local actual
-            
+
             # Contar facturas del cliente creadas hoy (en hora local)
             count = (
-                Invoice.objects
-                .filter(client=self.client)
-                .annotate(local_date=ToLocalDate('created_at'))
+                Invoice.objects.filter(client=self.client)
+                .annotate(local_date=ToLocalDate("created_at"))
                 .filter(local_date=local_today)
-                .count() + 1
+                .count()
+                + 1
             )
 
             # Generar código único
@@ -129,7 +131,9 @@ class Invoice(models.Model):
                     return
                 except IntegrityError:
                     count += 1
-                    self.code = f"{self.client.phone_number}{local_today.strftime('%Y%m%d')}{count:03d}"
+                    self.code = (
+                        f"{self.client.phone_number}{local_today.strftime('%Y%m%d')}{count:03d}"
+                    )
 
             raise IntegrityError("No se pudo generar un código único tras varios intentos.")
         else:

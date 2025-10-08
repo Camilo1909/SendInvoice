@@ -35,7 +35,7 @@ def sendInvoice(request):
                 client=client, img_invoice=img_invoice, type=type, created_by=account.username
             )
             invoice.save()
-            
+
         else:
             print(form.errors)
     else:
