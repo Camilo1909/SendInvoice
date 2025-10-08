@@ -42,6 +42,12 @@ resource "aws_iam_policy" "s3_access" {
     Version = "2012-10-17"
     Statement = [
       {
+        Sid    = "ListAllBuckets"
+        Effect = "Allow"
+        Action = "s3:ListAllMyBuckets"
+        Resource = "*"
+      },
+      {
         Sid    = "ListBuckets"
         Effect = "Allow"
         Action = [
