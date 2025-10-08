@@ -16,6 +16,8 @@ module "ec2" {
   instance_type     = var.ec2_instance_type
   ssh_key_name      = var.ssh_key_name
   my_ip             = var.my_ip
+
+  iam_instance_profile = module.iam.ec2_instance_profile_name
 }
 
 module "rds" {
@@ -30,4 +32,22 @@ module "rds" {
   db_name               = var.db_name
   db_username           = var.db_username
   db_password           = var.db_password
+}
+
+module "s3" {
+  source = "./modules/s3"
+
+  project_name = var.project_name
+  environment  = var.environment
+  domain_name  = var.domain_name
+}
+
+# NUEVO: Módulo IAM
+module "iam" {
+  source = "./modules/iam"
+
+  project_name      = var.project_name
+  environment       = var.environment
+  static_bucket_arn = module.s3.static_bucket_arn
+  media_bucket_arn  = module.s3.media_bucket_arn
 }

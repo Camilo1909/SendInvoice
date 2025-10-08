@@ -76,6 +76,8 @@ resource "aws_instance" "web" {
   vpc_security_group_ids = [aws_security_group.ec2.id]
   subnet_id              = var.public_subnet_ids[0]  # Primera subnet pública
 
+  iam_instance_profile = var.iam_instance_profile
+
   # User data - script de inicialización
   user_data = templatefile("${path.module}/user_data.sh", {
     project_name = var.project_name

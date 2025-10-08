@@ -33,3 +33,24 @@ output "rds_connection_string" {
   value       = "postgresql://${var.db_username}:***@${module.rds.db_instance_address}:${module.rds.db_instance_port}/${var.db_name}"
   sensitive   = true
 }
+
+# S3
+output "static_bucket_name" {
+  description = "Bucket para archivos estáticos"
+  value       = module.s3.static_bucket_name
+}
+
+output "media_bucket_name" {
+  description = "Bucket para archivos media"
+  value       = module.s3.media_bucket_name
+}
+
+output "static_bucket_url" {
+  description = "URL del bucket static"
+  value       = "https://${module.s3.static_bucket_domain}"
+}
+
+output "media_bucket_url" {
+  description = "URL del bucket media"
+  value       = "https://${module.s3.media_bucket_domain}"
+}

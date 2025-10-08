@@ -33,3 +33,9 @@ variable "my_ip" {
   description = "Tu IP pública para SSH"
   type        = string
 }
+
+variable "iam_instance_profile" {
+  description = "IAM instance profile para el EC2"
+  type        = string
+  default     = ""
+}

@@ -98,3 +98,10 @@ variable "ssh_key_name" {
   type        = string
   default     = "sendinvoice-key"
 }
+
+# Dominio
+variable "domain_name" {
+  description = "Dominio de la aplicación"
+  type        = string
+  default     = "sendinvoice.site"
+} 
