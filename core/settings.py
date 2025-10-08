@@ -167,66 +167,66 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-USE_S3 = config('USE_S3', default=False, cast=bool)
+USE_S3 = config("USE_S3", default=False, cast=bool)
 
 if USE_S3:
     # ========================================
     # AWS S3 Configuration
     # ========================================
-    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME_STATIC = config('AWS_STORAGE_BUCKET_NAME_STATIC')
-    AWS_STORAGE_BUCKET_NAME_MEDIA = config('AWS_STORAGE_BUCKET_NAME_MEDIA')
-    AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME', default='us-east-1')
-    
+    AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME_STATIC = config("AWS_STORAGE_BUCKET_NAME_STATIC")
+    AWS_STORAGE_BUCKET_NAME_MEDIA = config("AWS_STORAGE_BUCKET_NAME_MEDIA")
+    AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="us-east-1")
+
     # ¿Qué hace cada variable?
     # AWS_ACCESS_KEY_ID: Usuario que puede escribir en S3
     # AWS_SECRET_ACCESS_KEY: Contraseña de ese usuario
     # AWS_STORAGE_BUCKET_NAME_STATIC: Nombre del bucket para CSS/JS
     # AWS_STORAGE_BUCKET_NAME_MEDIA: Nombre del bucket para facturas/logos
     # AWS_S3_REGION_NAME: Región donde están los buckets
-    
+
     # ========================================
     # S3 Settings (optimización)
     # ========================================
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME_STATIC}.s3.amazonaws.com'
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME_STATIC}.s3.amazonaws.com"
     # URL base: sendinvoice-static-prod.s3.amazonaws.com
-    
+
     AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400',  # Cache 24 horas
+        "CacheControl": "max-age=86400",  # Cache 24 horas
     }
     # ¿Para qué? Navegadores cachean archivos estáticos (más rápido)
-    
+
     AWS_DEFAULT_ACL = None
     # None = No ACL por defecto (usa política del bucket)
-    
+
     AWS_S3_FILE_OVERWRITE = False
     # False = No sobrescribir archivos con mismo nombre
     # Django agrega hash al nombre si ya existe
-    
+
     # ========================================
     # Static Files en S3
     # ========================================
-    STATICFILES_STORAGE = 'core.storage_backends.StaticStorage'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    STATICFILES_STORAGE = "core.storage_backends.StaticStorage"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
     # URL final: https://sendinvoice-static-prod.s3.amazonaws.com/static/styles.css
-    
+
     # ========================================
     # Media Files en S3
     # ========================================
-    DEFAULT_FILE_STORAGE = 'core.storage_backends.MediaStorage'
-    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME_MEDIA}.s3.amazonaws.com/media/'
+    DEFAULT_FILE_STORAGE = "core.storage_backends.MediaStorage"
+    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME_MEDIA}.s3.amazonaws.com/media/"
     # URL final: https://sendinvoice-media-prod.s3.amazonaws.com/media/logo.png
 
 else:
     # ========================================
     # Desarrollo Local (sin S3)
     # ========================================
-    STATIC_URL = '/static/'
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
-    
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
+    STATIC_URL = "/static/"
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = BASE_DIR / "media"
 
 # Whitenoise: Compresión y cache de archivos estáticos
 STORAGES = {
