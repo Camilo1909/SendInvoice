@@ -23,15 +23,15 @@
                         {% for client in clients %}
                         <tr>
                             <td>{{ client.phone_number }}</td>
-                            <td>{{ client.first_name }}</td>
+                            <td>{{ client.name }}</td>
                             <td>{{ client.last_name }}</td>
                             <td>{{ client.email }}</td>
                             <td>
                                 <a href="#" class="btn btn-primary me-1 text-white">
                                     <i class="bi bi-eye btn-txt"></i> Ver
                                 </a>
-                                <a href="#" class="btn btn-secondary text-white">
-                                    <i class="bi bi-pencil btn-txt"></i> Editar
+                                <a href="{% url 'client_update' client.id %}" class="btn btn-secondary text-white">
+                                    <i class="bi bi-pencil btn-txt"></i> Actualizar
                                 </a>
                             </td>
                         </tr>

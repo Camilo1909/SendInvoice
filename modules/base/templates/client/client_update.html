@@ -1,0 +1,58 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}Actualizar Cliente{% endblock %}
+
+{% block page_title %}Actualizar Cliente{% endblock %}
+
+{% block content %}
+<div class="container mt-4 d-flex justify-content-center py-5">
+    <div class="card shadow-lg rounded-3 border-0 w-100" style="max-width: 600px;">
+            <div class="card-header text-center">
+                <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Actualizar Cliente</h4>
+            <form method="post" class="card-body p-3">
+                {% csrf_token %}
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-4 text-end">
+                        <label for="phone_number" class="form-label">Teléfono:</label>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ client.phone_number }}" required>
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-4 text-end">
+                        <label for="first_name" class="form-label">Nombre:</label>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" id="name" name="name" value="{{ client.name }}">
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-4 text-end">
+                        <label for="last_name" class="form-label">Apellidos:</label>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" id="last_names" name="last_names" value="{{ client.last_names }}">
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-4 text-end">
+                        <label for="email" class="form-label">Correo:</label>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="email" class="form-control" id="email" name="email" value="{{ client.email }}">
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-12">
+                        <a href="{% url 'client_list' %}">
+                            <button type="button" class="btn btn-secondary">Regresar</button>
+                        </a>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </div>
+            </form>
+    </div>
+</div>
+{% endblock %}
