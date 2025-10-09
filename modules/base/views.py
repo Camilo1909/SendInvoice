@@ -34,9 +34,7 @@ def client_update(request, client_id):
                 .exists()
             ):
                 messages.error(request, "Phone number already exists.")
-                return render(
-                    request, "client/client_update.html", {"client": client, "form": form}
-                )
+                return render(request, "client/client_update.html", {"form": form})
 
             client = form.save(commit=False)
             client.updated_by = account.username
@@ -46,7 +44,21 @@ def client_update(request, client_id):
             return redirect("client_list")
     else:
         form = ClientForm(instance=client)
-    return render(request, "client/client_update.html", {"client": client})
+    return render(request, "client/client_update.html", {"form": form})
+
+
+owner_or_role_required("Admin")
+
+
+def client_query(request, client_id):
+    try:
+        client = Client.objects.get(id=client_id)
+    except Client.DoesNotExist:
+        client = None
+        messages.error(request, "Client not found.")
+        return render(request, "client/client_list.html")
+    form = ClientForm(instance=client)
+    return render(request, "client/client_query.html", {"form": form})
 
 
 @owner_required

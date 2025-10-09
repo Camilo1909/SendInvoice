@@ -24,10 +24,10 @@
                         <tr>
                             <td>{{ client.phone_number }}</td>
                             <td>{{ client.name }}</td>
-                            <td>{{ client.last_name }}</td>
+                            <td>{{ client.last_names }}</td>
                             <td>{{ client.email }}</td>
                             <td>
-                                <a href="#" class="btn btn-primary me-1 text-white">
+                                <a href="{% url 'client_query' client.id %}" class="btn btn-primary me-1 text-white">
                                     <i class="bi bi-eye btn-txt"></i> Ver
                                 </a>
                                 <a href="{% url 'client_update' client.id %}" class="btn btn-secondary text-white">
