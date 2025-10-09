@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from core.decorators import owner_or_role_required, owner_required
 from modules.auths.models import Account
 
-from .forms import ClientForm
+from .forms import ClientForm, CompanyForm
 from .models import Client, Company
 
 # Create your views here.
@@ -65,3 +65,19 @@ def client_query(request, client_id):
 def company_list(request):
     companies = Company.objects.all()
     return render(request, "company/company_list.html", {"companies": companies})
+
+
+@owner_required
+def company_create(request):
+    account = Account.getAccount(request.user)
+    if request.method == "POST":
+        form = CompanyForm(request.POST)
+        if form.is_valid():
+            company = form.save(commit=False)
+            company.created_by = account.username
+            company.save()
+            messages.success(request, "Compañia creada exitosamente.")
+            return redirect("company_list")
+    else:
+        form = CompanyForm()
+    return render(request, "company/company_create.html", {"form": form})
