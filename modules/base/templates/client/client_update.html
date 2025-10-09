@@ -1,0 +1,30 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4 d-flex justify-content-center py-5">
+    <div class="card shadow-lg rounded-3 border-0 w-100" style="max-width: 600px;">
+            <div class="card-header text-center">
+                <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Actualizar Cliente</h4>
+            <form method="post" class="card-body p-3">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="phone_number" class="form-label">Teléfono:</label>
+                    <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ client.phone_number }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="first_name" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ client.first_name }}">
+                </div>
+                <div class="mb-3">
+                    <label for="last_name" class="form-label">Apellidos:</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ client.last_name }}">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ client.email }}">
+                </div>
+                <button type="submit" class="btn btn-primary">Actualizar Cliente</button>
+    </div>
+</div>
+{% endblock %}
