@@ -37,11 +37,9 @@ class WhatsAppService:
             },
         }
         response = requests.post(settings.WHATSAPP_API_URL, headers=headers, json=payload)
-        # Depuración
         print("HTTP status:", response.status_code)
         print("Response:", response.json())
 
-        # Retornar True solo si no hay error en la API
         resp_json = response.json()
         if response.status_code == 200 and "error" not in resp_json:
             return True

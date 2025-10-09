@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import redirect, render
 
 from core.decorators import owner_or_role_required
 from modules.auths.models import Account
@@ -38,7 +39,7 @@ def sendInvoice(request):
 
             def send_whatsapp_hook():
                 WhatsAppService.send_invoice(
-                    phone_number=invoice.client.phone_number, image_url=invoice.img_invoice.url
+                    phone_number=invoice.client.phone_number, image_url=invoice.img_invoice
                 )
 
             invoice.on_saved = send_whatsapp_hook
@@ -50,3 +51,17 @@ def sendInvoice(request):
         form = InvoiceForm()
 
     return render(request, "send_invoice.html", {"form": form})
+
+
+@owner_or_role_required("Admin")
+def resendInvoice(request, invoice_id):
+    try:
+        invoice = Invoice.objects.get(id=invoice_id)
+    except Invoice.DoesNotExist:
+        messages.error("Invoice not found")
+        return redirect("invoice_list")
+    WhatsAppService.send_invoice(
+        phone_number=invoice.client.phone_number, image_url=invoice.img_invoice
+    )
+    messages.success(request, "Factura reenviada exitosamente.")
+    return redirect("invoice_list")
