@@ -17,7 +17,7 @@
                         <label for="phone_number" class="form-label">Teléfono:</label>
                     </div>
                     <div class="col-md-5">
-                        <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ form.phone_number.value }}" required>
+                        {{ form.phone_number }}
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
@@ -25,7 +25,7 @@
                         <label for="first_name" class="form-label">Nombre:</label>
                     </div>
                     <div class="col-md-5">
-                        <input type="text" class="form-control" id="name" name="name" value="{{ form.name.value }}">
+                        {{ form.name }}
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
@@ -33,7 +33,7 @@
                         <label for="last_name" class="form-label">Apellidos:</label>
                     </div>
                     <div class="col-md-5">
-                        <input type="text" class="form-control" id="last_names" name="last_names" value="{{ form.last_names.value }}">
+                        {{ form.last_names }}
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
@@ -41,7 +41,7 @@
                         <label for="email" class="form-label">Correo:</label>
                     </div>
                     <div class="col-md-5">
-                        <input type="email" class="form-control" id="email" name="email" value="{{ form.email.value }}">
+                        {{ form.email }}
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">

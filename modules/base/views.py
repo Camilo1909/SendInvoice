@@ -24,7 +24,7 @@ def client_update(request, client_id):
     except Client.DoesNotExist:
         client = None
         messages.error(request, "Client not found.")
-        return render(request, "client/client_list.html")
+        return redirect("client_list")
     if request.method == "POST":
         form = ClientForm(request.POST, instance=client)
         if form.is_valid():
@@ -56,8 +56,11 @@ def client_query(request, client_id):
     except Client.DoesNotExist:
         client = None
         messages.error(request, "Client not found.")
-        return render(request, "client/client_list.html")
+        return redirect("client_list")
     form = ClientForm(instance=client)
+    for field in form.fields.values():
+        field.widget.attrs["readonly"] = True
+        field.widget.attrs["disabled"] = True
     return render(request, "client/client_query.html", {"form": form})
 
 
@@ -81,3 +84,40 @@ def company_create(request):
     else:
         form = CompanyForm()
     return render(request, "company/company_create.html", {"form": form})
+
+
+@owner_required
+def company_update(request, company_id):
+    account = Account.getAccount(request.user)
+    try:
+        company = Company.objects.get(id=company_id)
+    except Company.DoesNotExist:
+        company = None
+        messages.error(request, "Compañia no encontrada.")
+        return redirect("company_list")
+    if request.method == "POST":
+        form = CompanyForm(request.POST, instance=company)
+        if form.is_valid():
+            company = form.save(commit=False)
+            company.updated_by = account.username
+            company.save()
+            messages.success(request, "Compañia actualizada exitosamente.")
+            return redirect("company_list")
+    else:
+        form = CompanyForm(instance=company)
+    return render(request, "company/company_update.html", {"form": form})
+
+
+@owner_required
+def company_query(request, company_id):
+    try:
+        company = Company.objects.get(id=company_id)
+    except Company.DoesNotExist:
+        company = None
+        messages.error(request, "Compañia no encontrada.")
+        return redirect("company_list")
+    form = CompanyForm(instance=company)
+    for field in form.fields.values():
+        field.widget.attrs["readonly"] = True
+        field.widget.attrs["disabled"] = True
+    return render(request, "company/company_query.html", {"form": form})
