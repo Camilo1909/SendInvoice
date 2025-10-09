@@ -173,8 +173,8 @@ if USE_S3:
     # ========================================
     # AWS S3 Configuration
     # ========================================
-    AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+    AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default=None)
+    AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default=None)
     AWS_STORAGE_BUCKET_NAME_STATIC = config("AWS_STORAGE_BUCKET_NAME_STATIC")
     AWS_STORAGE_BUCKET_NAME_MEDIA = config("AWS_STORAGE_BUCKET_NAME_MEDIA")
     AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="us-east-1")
