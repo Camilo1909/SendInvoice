@@ -87,3 +87,43 @@ def assign_password(request):
         form = AccountPasswordForm(account)
 
     return render(request, "user_password.html", {"form": form, "account": account})
+
+
+@owner_required
+def user_update(request, user_id):
+    account = Account.getAccount(request.user)
+    try:
+        user = Account.objects.get(id=user_id)
+    except Account.DoesNotExist:
+        messages.error(request, "El usuario no existe.")
+        return redirect("users_list")
+
+    if request.method == "POST":
+        form = AccountForm(request.POST, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.updated_by = account.username
+            user.save()
+            messages.success(request, "Usuario actualizado exitosamente.")
+            return redirect("users_list")
+        else:
+            print(form.errors)
+    else:
+        form = AccountForm(instance=user)
+
+    return render(request, "user_update.html", {"form": form, "user": user})
+
+
+@owner_required
+def user_query(request, user_id):
+    try:
+        user = Account.objects.get(id=user_id)
+    except Account.DoesNotExist:
+        messages.error(request, "El usuario no existe.")
+        return redirect("users_list")
+
+    form = AccountForm(instance=user)
+    for field in form.fields.values():
+        field.disabled = True
+
+    return render(request, "user_query.html", {"form": form, "user": user})
