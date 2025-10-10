@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from django.conf import settings
 
 import boto3
@@ -38,12 +40,16 @@ class WhatsAppService:
         }
 
         image_full_url = None
-        if image_url:
-            if image_url.startswith("http"):
-                image_full_url = image_url
-            else:
-                # Generar URL firmada para S3
-                image_full_url = WhatsAppService.generate_presigned_url(image_url)
+        if image_url and not image_url.startswith("http"):
+            # generar presigned URL
+            image_full_url = WhatsAppService.generate_presigned_url(image_url)
+            print("Generated presigned URL:", image_full_url)
+        elif image_url.startswith("http"):
+            # extraer key de S3
+            parsed = urlparse(image_url)
+            key = parsed.path.lstrip("/")  # "media/invoices/factura.png"
+            image_full_url = WhatsAppService.generate_presigned_url(key)
+            print("Generated presigned URL:", image_full_url)
 
         if not image_full_url:
             print("[Error] No se pudo generar la URL de imagen firmada")
