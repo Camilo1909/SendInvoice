@@ -50,13 +50,6 @@ def send_invoice(request):
             invoice = Invoice(
                 client=client, img_invoice=img_invoice, type=type, created_by=account.username
             )
-
-            def send_whatsapp_hook():
-                WhatsAppService.send_invoice(
-                    phone_number=invoice.client.phone_number, image_url=invoice.img_invoice
-                )
-
-            invoice.on_saved = send_whatsapp_hook
             invoice.save()
 
         else:

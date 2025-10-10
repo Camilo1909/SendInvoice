@@ -1,5 +1,6 @@
 import os
 
+from django.conf import settings
 from django.db import IntegrityError, models
 from django.db.models import Func
 from django.utils import timezone
@@ -79,7 +80,7 @@ class Invoice(models.Model):
                     )
         else:
             super().save(*args, **kwargs)
-        if self.img_invoice:
+        if not getattr(settings, "USE_S3", False) and self.img_invoice:
             image_path = self.img_invoice.path
             img = Image.open(image_path)
 
