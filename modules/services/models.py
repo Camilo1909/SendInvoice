@@ -20,7 +20,7 @@ class WhatsAppService:
             url = s3_client.generate_presigned_url(
                 "get_object",
                 Params={
-                    "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
+                    "Bucket": settings.AWS_STORAGE_BUCKET_NAME_MEDIA,
                     "Key": file_path,
                 },
                 ExpiresIn=600,  # 10 minutos
