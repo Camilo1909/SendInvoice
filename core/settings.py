@@ -191,16 +191,20 @@ if USE_S3:
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME_STATIC}.s3.amazonaws.com"
     # URL base: sendinvoice-static-prod.s3.amazonaws.com
 
-    AWS_S3_OBJECT_PARAMETERS = {
-        "CacheControl": "max-age=86400",  # Cache 24 horas
-    }
-    # Navegadores cachean archivos estáticos (más rápido)
-
     AWS_DEFAULT_ACL = None
-
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+    # Navegadores cachean archivos estáticos (más rápido)
     AWS_S3_FILE_OVERWRITE = False
     # False = No sobrescribir archivos con mismo nombre
     # Django agrega hash al nombre si ya existe
+    AWS_S3_REGION_NAME = "us-east-1"
+    AWS_QUERYSTRING_AUTH = False  # No agrega tokens temporales a URLs
+
+    # ✅ Nueva configuración obligatoria para buckets sin ACLs
+    AWS_S3_BUCKET_ACL = None
+    AWS_S3_BUCKET_AUTHENTICATED_READ = False
+    AWS_S3_ADDRESSING_STYLE = "virtual"  # usa dominio tipo bucket.s3.amazonaws.com
+    AWS_S3_SIGNATURE_VERSION = "s3v4"
 
     # ========================================
     # Static Files en S3

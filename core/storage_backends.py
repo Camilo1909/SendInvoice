@@ -15,7 +15,7 @@ class StaticStorage(S3Boto3Storage):
 
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME_STATIC
     location = "static"  # Carpeta dentro del bucket
-    default_acl = "public-read"  # Archivos públicos
+    default_acl = None  # Archivos públicos
     file_overwrite = False
 
     # Cuando Django hace: collectstatic
@@ -29,7 +29,7 @@ class MediaStorage(S3Boto3Storage):
 
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME_MEDIA
     location = "media"  # Carpeta dentro del bucket
-    default_acl = "private"  # Archivos privados
+    default_acl = None  # Archivos privados
     file_overwrite = False
 
     # Cuando usuario sube una factura:
