@@ -36,12 +36,10 @@
                 </div>
                 <div class="row mb-3 align-items-center">
                     <div class="col-md-9">
-                        {% if form.instance.img_invoice %}
-                            <img src="{{ form.instance.img_invoice.url }}" 
-                                class="img-fluid rounded" 
-                                style="max-height: 400px;">
-                        {% else %}
-                            <p>No hay imagen disponible</p>
+                        {% if image_url %}
+                            <div class="mb-3 text-center">
+                                <img src="{{ image_url }}" class="img-fluid rounded" alt="Factura">
+                            </div>
                         {% endif %}
                     </div>
                 </div>

@@ -25,11 +25,16 @@ def invoice_query(request, invoice_id):
     except Invoice.DoesNotExist:
         messages.error(request, "Factura no existente")
 
+    image_url = None
+    if invoice.img_invoice:
+        key = invoice.img_invoice.name  # "media/invoices/factura.png"
+        image_url = WhatsAppService.generate_presigned_url(key)
+
     form = InvoiceForm(instance=invoice)
     for field in form.fields.values():
         field.widget.attrs["readonly"] = True
         field.widget.attrs["disabled"] = True
-    return render(request, "invoice_query.html", {"form": form})
+    return render(request, "invoice_query.html", {"form": form, "image_url": image_url})
 
 
 @owner_or_role_required("Admin")
