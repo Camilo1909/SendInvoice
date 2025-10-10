@@ -56,7 +56,8 @@ def send_invoice(request):
                 client=client, img_invoice=img_invoice, type=type, created_by=account.username
             )
             invoice.save()
-
+            messages.success(request, "Factura enviada exitosamente.")
+            redirect("sendInvoice")
         else:
             print(form.errors)
     else:
