@@ -263,6 +263,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # WHASTAPP API SETTINGS
 # ============================================
 
+WHATSAPP_VERIFY_TOKEN = config("WHATSAPP_VERIFY_TOKEN", default="")
 WHATSAPP_API_TOKEN = config("WHATSAPP_API_TOKEN", default="")
 WHATSAPP_PHONE_ID = config("WHATSAPP_PHONE_ID", default="")
 WHATSAPP_API_URL = config(
