@@ -196,8 +196,7 @@ if USE_S3:
     }
     # Navegadores cachean archivos estáticos (más rápido)
 
-    AWS_DEFAULT_ACL = None
-    # None = No ACL por defecto (usa política del bucket)
+    AWS_DEFAULT_ACL = 'public-read'
 
     AWS_S3_FILE_OVERWRITE = False
     # False = No sobrescribir archivos con mismo nombre
