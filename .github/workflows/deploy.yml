@@ -1,0 +1,58 @@
+name: Deploy to EC2
+
+on:
+  workflow_run:
+    workflows: ["Docker Build and Push"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    
+    # Solo ejecutar si el workflow anterior fue exitoso
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    steps:
+      - name: 🚀 Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            echo "🔄 Iniciando deployment..."
+            
+            # Navegar al directorio del proyecto
+            cd /opt/sendinvoice
+            
+            # Pull de la nueva imagen
+            echo "📥 Descargando nueva imagen..."
+            sudo docker-compose pull
+            
+            # Reiniciar servicios sin downtime
+            echo "🔄 Reiniciando servicios..."
+            sudo docker-compose up -d --force-recreate --no-deps web
+            
+            # Verificar que el contenedor esté corriendo
+            echo "✅ Verificando estado..."
+            sudo docker-compose ps
+            
+            # Limpiar imágenes viejas
+            echo "🧹 Limpiando imágenes viejas..."
+            sudo docker image prune -f
+            
+            echo "✅ Deployment completado exitosamente!"
+
+      - name: 📊 Deployment Summary
+        if: always()
+        run: |
+          echo "### 🚀 Deployment Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Server:** ${{ secrets.EC2_HOST }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Image:** ${{ secrets.DOCKER_IMAGE }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
