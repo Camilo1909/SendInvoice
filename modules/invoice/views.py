@@ -27,7 +27,7 @@ def invoice_query(request, invoice_id):
 
     image_url = None
     if invoice.img_invoice:
-        key = invoice.img_invoice.name  # "media/invoices/factura.png"
+        key = f"media/{invoice.img_invoice.name}"  # "media/invoices/factura.png"
         image_url = WhatsAppService.generate_presigned_url(key)
 
     form = InvoiceForm(instance=invoice)
