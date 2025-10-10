@@ -19,8 +19,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ============================================
 # SECURITY SETTINGS
 # ============================================
-# ANTES: SECRET_KEY hardcodeado (INSEGURO)
-# AHORA: Lee desde .env, con fallback para desarrollo
 SECRET_KEY = config(
     "SECRET_KEY", default="django-insecure-SOLO-PARA-DESARROLLO-CAMBIAR-EN-PRODUCCION"
 )
@@ -31,7 +29,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 
 # ALLOWED_HOSTS
 # Desarrollo: ['localhost', '127.0.0.1']
-# Producción: ['tu-dominio.com']
+# Producción: ['dominio.com']
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv())
 CSRF_TRUSTED_ORIGINS = config(
     "CSRF_TRUSTED_ORIGINS", default=f"http://{ALLOWED_HOSTS[0]}", cast=Csv()
@@ -50,7 +48,6 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
 ]
 
-# Tus módulos personalizados
 MODULES = [
     "modules.auths.apps.AuthsConfig",
     "modules.base.apps.BaseConfig",
@@ -63,8 +60,13 @@ INITIAL_APP = [
     "core",
 ]
 
+AWS_APPS = [
+    "storages",  # django-storages para AWS S3
+]
+
 INSTALLED_APPS += MODULES
 INSTALLED_APPS += INITIAL_APP
+INSTALLED_APPS += AWS_APPS
 
 # ============================================
 # MIDDLEWARE
@@ -95,7 +97,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # Tu context processor personalizado
+                # context processor personalizado
                 "modules.menu.context_processors.menu_items",
             ],
         },
@@ -107,8 +109,6 @@ WSGI_APPLICATION = "core.wsgi.application"
 # ============================================
 # DATABASE
 # ============================================
-# ANTES: Credenciales hardcodeadas (INSEGURO)
-# AHORA: Lee desde .env
 
 DATABASES = {
     "default": {
@@ -179,7 +179,6 @@ if USE_S3:
     AWS_STORAGE_BUCKET_NAME_MEDIA = config("AWS_STORAGE_BUCKET_NAME_MEDIA")
     AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="us-east-1")
 
-    # ¿Qué hace cada variable?
     # AWS_ACCESS_KEY_ID: Usuario que puede escribir en S3
     # AWS_SECRET_ACCESS_KEY: Contraseña de ese usuario
     # AWS_STORAGE_BUCKET_NAME_STATIC: Nombre del bucket para CSS/JS
@@ -195,7 +194,7 @@ if USE_S3:
     AWS_S3_OBJECT_PARAMETERS = {
         "CacheControl": "max-age=86400",  # Cache 24 horas
     }
-    # ¿Para qué? Navegadores cachean archivos estáticos (más rápido)
+    # Navegadores cachean archivos estáticos (más rápido)
 
     AWS_DEFAULT_ACL = None
     # None = No ACL por defecto (usa política del bucket)

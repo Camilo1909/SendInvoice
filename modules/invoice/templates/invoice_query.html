@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}Detalle de la Factura{% endblock %}
+
+{% block page_title %}Detalle de la Factura{% endblock %}
+
+{% block content %}
+<div class="container mt-4 d-flex justify-content-center py-5">
+    <div class="card shadow-lg rounded-3 border-0 w-100" style="max-width: 800px;">
+            <div class="card-header text-center">
+                <h4 class="mb-0"><i class="bi bi-eye"></i> Detalle de la Factura</h4>
+                <form method="post" class="card-body p-3">
+                {% csrf_token %}
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-2 text-end">
+                        <label for="code" class="form-label">Codigo:</label>
+                    </div>
+                    <div class="col-md-9">
+                        {{ form.code }}
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-2 text-end">
+                        <label for="client" class="form-label">Cliente:</label>
+                    </div>
+                    <div class="col-md-3">
+                        {{ form.client }}
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <label for="type" class="form-label">Concepto:</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.type }}
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-9">
+                        {{ form.img_invoice }}
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-12">
+                        <a href="{% url 'client_list' %}">
+                            <button type="button" class="btn btn-secondary">Regresar</button>
+                        </a>
+                    </div>
+                </div>
+            </form>
+    </div>
+</div>
+{% endblock %}

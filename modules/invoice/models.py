@@ -1,7 +1,5 @@
 import os
-from io import BytesIO
 
-from django.core.files.base import ContentFile
 from django.db import IntegrityError, models
 from django.db.models import Func
 from django.utils import timezone
@@ -53,61 +51,6 @@ class Invoice(models.Model):
     def __str__(self):
         return self.code
 
-    @staticmethod
-    def resize_for_whatsapp(image_file, filename, layout="square", quality=85):
-        """
-        Resize an image according to WhatsApp Business API recommended dimensions.
-
-        Args:
-            image_file: Django UploadedFile or ImageField file
-            filename: Base name for the new image file (string)
-            layout: 'square' (1080x1080) or 'horizontal' (1200x628)
-            quality: JPEG compression quality (1-100)
-
-        Returns:
-            Django ContentFile ready to save into ImageField
-        """
-        dimensions = {"square": (1080, 1080), "horizontal": (1200, 628)}
-
-        if layout not in dimensions:
-            raise ValueError("layout must be 'square' or 'horizontal'")
-
-        img = Image.open(image_file)
-
-        # Convert to RGB if it has transparency
-        if img.mode in ("RGBA", "LA", "P"):
-            background = Image.new("RGB", img.size, (255, 255, 255))
-            if img.mode == "P":
-                img = img.convert("RGBA")
-            background.paste(img, mask=img.split()[-1] if img.mode == "RGBA" else None)
-            img = background
-
-        target_width, target_height = dimensions[layout]
-        original_ratio = img.width / img.height
-        target_ratio = target_width / target_height
-
-        if original_ratio > target_ratio:
-            new_width = target_width
-            new_height = int(target_width / original_ratio)
-        else:
-            new_height = target_height
-            new_width = int(target_height * original_ratio)
-
-        resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-
-        # White canvas centered
-        final_img = Image.new("RGB", (target_width, target_height), (255, 255, 255))
-        offset_x = (target_width - new_width) // 2
-        offset_y = (target_height - new_height) // 2
-        final_img.paste(resized_img, (offset_x, offset_y))
-
-        buffer = BytesIO()
-        final_img.save(buffer, format="JPEG", quality=quality, optimize=True)
-        buffer.seek(0)
-
-        new_name = f"{filename}.jpg"
-        return ContentFile(buffer.read(), name=new_name)
-
     def save(self, *args, **kwargs):
         if not self.code:
             local_today = timezone.localdate()  # Fecha local actual
@@ -128,14 +71,12 @@ class Invoice(models.Model):
             for attempt in range(100):
                 try:
                     super().save(*args, **kwargs)
-                    return
+                    break
                 except IntegrityError:
                     count += 1
                     self.code = (
                         f"{self.client.phone_number}{local_today.strftime('%Y%m%d')}{count:03d}"
                     )
-
-            raise IntegrityError("No se pudo generar un código único tras varios intentos.")
         else:
             super().save(*args, **kwargs)
         if self.img_invoice:

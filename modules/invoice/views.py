@@ -6,7 +6,7 @@ from modules.auths.models import Account
 from modules.base.models import Client
 from modules.services.models import WhatsAppService
 
-from .forms import InvoiceForm
+from .forms import InvoiceForm, SendInvoiceForm
 from .models import Invoice
 
 # Create your views here.
@@ -19,10 +19,24 @@ def invoice_list(request):
 
 
 @owner_or_role_required("Admin")
-def sendInvoice(request):
+def invoice_query(request, invoice_id):
+    try:
+        invoice = Invoice.objects.get(pk=invoice_id)
+    except Invoice.DoesNotExist:
+        messages.error(request, "Factura no existente")
+
+    form = InvoiceForm(instance=invoice)
+    for field in form.fields.values():
+        field.widget.attrs["readonly"] = True
+        field.widget.attrs["disabled"] = True
+    return render(request, "invoice_query.html", {"form": form})
+
+
+@owner_or_role_required("Admin")
+def send_invoice(request):
     account = Account.getAccount(request.user)
     if request.method == "POST":
-        form = InvoiceForm(request.POST, request.FILES)
+        form = SendInvoiceForm(request.POST, request.FILES)
         if form.is_valid():
             phone_number = form.cleaned_data["phone_number"]
             img_invoice = form.cleaned_data["img_invoice"]
@@ -48,13 +62,13 @@ def sendInvoice(request):
         else:
             print(form.errors)
     else:
-        form = InvoiceForm()
+        form = SendInvoiceForm()
 
     return render(request, "send_invoice.html", {"form": form})
 
 
 @owner_or_role_required("Admin")
-def resendInvoice(request, invoice_id):
+def resend_invoice(request, invoice_id):
     try:
         invoice = Invoice.objects.get(id=invoice_id)
     except Invoice.DoesNotExist:

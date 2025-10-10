@@ -27,10 +27,10 @@
                             <td>{{ invoice.client.phone_number }}</td>
                             <td>{{ invoice.created_at }}</td>
                             <td>
-                                <a href="#" class="btn btn-primary me-1 text-white">
+                                <a href="{% url 'invoice_query' invoice.id %}" class="btn btn-primary me-1 text-white">
                                     <i class="bi bi-eye btn-txt"></i> Ver
                                 </a>
-                                <a href="{% url 'resendInvoice' invoice.id %}" class="btn btn-secondary text-white">
+                                <a href="{% url 'resend_invoice' invoice.id %}" class="btn btn-secondary text-white">
                                     <i class="bi bi-send btn-txt"></i> Reenviar
                                 </a>
                             </td>

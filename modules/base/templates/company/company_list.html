@@ -33,7 +33,7 @@
                             <td>
                                 {% if company.get_admins %}
                                     {% for admin in company.get_admins %}
-                                        <span class="badge bg-primary me-1">{{ admin.phone_number }}</span>
+                                        {{ admin.phone_number }}
                                     {% endfor %}
                                 {% else %}
                                     <span class="badge bg-secondary">Sin admins</span>
@@ -43,7 +43,7 @@
                             <td>
                                 {% if company.get_admins %}
                                     {% for admin in company.get_admins %}
-                                        <span class="badge bg-primary me-1">{{ admin.fullname }}</span>
+                                        {{ admin.fullname }}
                                     {% endfor %}
                                 {% else %}
                                     <span class="badge bg-secondary">Sin admins</span>

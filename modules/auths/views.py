@@ -25,12 +25,12 @@ def login_app(request):
                 password=form.cleaned_data["password"],
             )
             if user is None:
-                msg = "Error en las credenciales"
-                messages.error(request, msg)
+                messages.error(request, "Error en las credenciales")
+                return render(request, "login.html", {"form": form})
             else:
                 account = Account.getAccount(user)
                 login(request, user)
-                msg = f"Bienvenido {account.get_full_name}"
+                messages.success(request, f"Bienvenido {account.fullname}")
                 return redirect("sendInvoice")
     else:
         form = LoginForm()
