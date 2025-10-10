@@ -68,7 +68,7 @@ INSTALLED_APPS += MODULES
 INSTALLED_APPS += INITIAL_APP
 INSTALLED_APPS += AWS_APPS
 
-# ============================================
+# =============================================
 # MIDDLEWARE
 # ============================================
 MIDDLEWARE = [
