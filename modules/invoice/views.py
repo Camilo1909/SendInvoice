@@ -67,9 +67,14 @@ def resend_invoice(request, invoice_id):
     except Invoice.DoesNotExist:
         messages.error("Invoice not found")
         return redirect("invoice_list")
-    sent = WhatsAppService.send_invoice(
-        phone_number=invoice.client.phone_number, image_url=invoice.img_invoice
-    )
+    try:
+        sent = WhatsAppService.send_invoice(
+            phone_number=invoice.client.phone_number, image_url=invoice.img_invoice
+        )
+    except Exception as e:
+        print(f"[Error] No se pudo reenviar la factura: {e}")
+        messages.error(request, f"No se pudo reenviar la factura: {e}")
+        return redirect("invoice_list")
     if sent:
         messages.success(request, "Factura reenviada exitosamente.")
     else:
