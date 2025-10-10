@@ -32,6 +32,7 @@ urlpatterns = [
     path("auth/", include("modules.auths.urls")),
     path("invoice/", include("modules.invoice.urls")),
     path("base/", include("modules.base.urls")),
+    path("services/", include("modules.services.urls")),
 ]
 
 if settings.DEBUG:
