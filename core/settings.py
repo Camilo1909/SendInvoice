@@ -9,6 +9,8 @@ MODIFICADO para soportar:
 
 from pathlib import Path
 
+from django.contrib.messages import constants as messages
+
 from decouple import Csv, config
 
 # ============================================
@@ -269,6 +271,19 @@ WHATSAPP_PHONE_ID = config("WHATSAPP_PHONE_ID", default="")
 WHATSAPP_API_URL = config(
     "WHATSAPP_API_URL", default="https://graph.facebook.com/v22.0/{WHATSAPP_PHONE_ID}/messages"
 ).format(WHATSAPP_PHONE_ID=WHATSAPP_PHONE_ID)
+
+# ============================================
+# MESSAGE FRAMEWORK SETTINGS
+# ============================================
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "secondary",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",  # ← este es el importante
+}
+
 
 # ============================================
 # CONFIGURACIÓN ESPECÍFICA DE PRODUCCIÓN
