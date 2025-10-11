@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
 
 from core.decorators import owner_or_role_required
@@ -15,7 +16,10 @@ from .models import Invoice
 @owner_or_role_required("Admin")
 def invoice_list(request):
     invoices = Invoice.objects.all()
-    return render(request, "invoice_list.html", {"invoices": invoices})
+    paginator = Paginator(invoices, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request, "invoice_list.html", {"page_obj": page_obj})
 
 
 @owner_or_role_required("Admin")

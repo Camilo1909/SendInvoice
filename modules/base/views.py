@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
 
 from core.decorators import owner_or_role_required, owner_required
@@ -13,7 +14,10 @@ from .models import Client, Company
 @owner_or_role_required("Admin")
 def client_list(request):
     clients = Client.objects.all()
-    return render(request, "client/client_list.html", {"clients": clients})
+    paginator = Paginator(clients, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request, "client/client_list.html", {"page_obj": page_obj})
 
 
 @owner_or_role_required("Admin")
@@ -67,7 +71,10 @@ def client_query(request, client_id):
 @owner_required
 def company_list(request):
     companies = Company.objects.all()
-    return render(request, "company/company_list.html", {"companies": companies})
+    paginator = Paginator(companies, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request, "company/company_list.html", {"page_obj": page_obj})
 
 
 @owner_required

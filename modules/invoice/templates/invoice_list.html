@@ -21,7 +21,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for invoice in invoices %}
+                        {% for invoice in page_obj %}
                         <tr>
                             <td>{{ invoice.code }}</td>
                             <td>{{ invoice.client.phone_number }}</td>
@@ -44,6 +44,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% include "include/pagination.html" %}
             </div>
         </div>
     </div>

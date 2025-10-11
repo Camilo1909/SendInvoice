@@ -27,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for user in users %}
+                        {% for user in page_obj %}
                         <tr>
                             <td>{{ user.first_name }}</td>
                             <td>{{ user.last_name }}</td>
@@ -51,6 +51,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% include "include/pagination.html" %}
             </div>
         </div>
     </div>

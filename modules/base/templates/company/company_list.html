@@ -27,13 +27,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for company in companies %}
+                        {% for company in page_obj %}
                         <tr>
                             <td>{{ company.short_name }}</td>
                             <td>
                                 {% if company.get_admins %}
                                     {% for admin in company.get_admins %}
-                                        {{ admin.phone_number }}
+                                        <span class="badge bg-span">{{ admin.phone_number }}</span><br>
                                     {% endfor %}
                                 {% else %}
                                     <span class="badge bg-secondary">Sin admins</span>
@@ -43,7 +43,7 @@
                             <td>
                                 {% if company.get_admins %}
                                     {% for admin in company.get_admins %}
-                                        {{ admin.fullname }}
+                                        <span class="badge bg-span">{{ admin.fullname }}</span><br>
                                     {% endfor %}
                                 {% else %}
                                     <span class="badge bg-secondary">Sin admins</span>
@@ -67,6 +67,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% include "include/pagination.html" %}
             </div>
         </div>
     </div>

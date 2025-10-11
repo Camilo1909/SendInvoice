@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
 from django.utils.safestring import mark_safe
 
@@ -41,7 +42,10 @@ def login_app(request):
 @owner_required
 def users_list(request):
     users = Account.objects.all()
-    return render(request, "user_list.html", {"users": users})
+    paginator = Paginator(users, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request, "user_list.html", {"page_obj": page_obj})
 
 
 @owner_required

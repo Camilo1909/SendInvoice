@@ -191,3 +191,35 @@ body {
 .bg-principal{
     background-color: #005f6b;
 }
+
+.bg-span{
+    background-color: #008c9e;
+}
+
+.pagination .page-link {
+  color: #005f6b;
+  border: 1px solid #cde3e6;
+  background-color: #f5fbfc;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.pagination .page-link:hover {
+  background-color: #d2f0f4;
+  color: #004651;
+  border-color: #a9d7dc;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #005f6b;
+  border-color: #005f6b;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 0 6px rgba(0, 95, 107, 0.4);
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #aaa;
+  background-color: #f2f2f2;
+  border-color: #ddd;
+}

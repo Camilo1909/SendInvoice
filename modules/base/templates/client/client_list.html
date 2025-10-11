@@ -20,7 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for client in clients %}
+                        {% for client in page_obj %}
                         <tr>
                             <td>{{ client.phone_number }}</td>
                             <td>{{ client.name }}</td>
@@ -44,6 +44,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% include "include/pagination.html" %}
             </div>
         </div>
     </div>
