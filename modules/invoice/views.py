@@ -44,6 +44,9 @@ def send_invoice(request):
         form = SendInvoiceForm(request.POST, request.FILES)
         if form.is_valid():
             phone_number = form.cleaned_data["phone_number"]
+            if len(phone_number) != 10:
+                messages.error(request, "El número de teléfono debe tener 10 dígitos.")
+                return render(request, "send_invoice.html", {"form": form})
             img_invoice = form.cleaned_data["img_invoice"]
             type = form.cleaned_data["type"]
 
