@@ -1,8 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import redirect, render
+from django.utils.safestring import mark_safe
 
-from core.decorators import owner_required
+from core.decorators import owner_or_role_required, owner_required
 
 from .forms import AccountForm, AccountPasswordForm, LoginForm
 from .models import Account, StatusAccount
@@ -67,26 +68,62 @@ def user_create(request):
     return render(request, "user_create.html", {"form": form})
 
 
-@owner_required
+@owner_or_role_required("Admin")
 def assign_password(request):
-    account_id = request.session.get("new_account_id")
-    if not account_id:
-        messages.error(request, "Primero completa los datos del usuario.")
-        return redirect("account_create_step1")
+    if request.session.get("new_account_id"):
+        account_id = request.session.get("new_account_id")
+        if not account_id:
+            messages.error(request, "Primero completa los datos del usuario.")
+            return redirect("account_create_step1")
 
-    account = Account.objects.get(id=account_id)
+        account = Account.objects.get(id=account_id)
 
-    if request.method == "POST":
-        form = AccountPasswordForm(account, request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Usuario creado exitosamente.")
-            del request.session["new_account_id"]
-            return redirect("users_list")
+        if request.method == "POST":
+            form = AccountPasswordForm(account, request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Usuario creado exitosamente.")
+                del request.session["new_account_id"]
+                return redirect("users_list")
+            else:
+                errors = None
+                for field, field_errors in form.errors.items():
+                    for error in field_errors:
+                        if errors is None:
+                            errors = f"{error}<br>"
+                        else:
+                            errors += f"{error}<br>"
+                messages.error(request, mark_safe(errors))
+        else:
+            form = AccountPasswordForm(account)
+
+        return render(
+            request, "user_password.html", {"form": form, "account": account, "change": False}
+        )
     else:
-        form = AccountPasswordForm(account)
+        account = Account.getAccount(request.user)
+        if request.method == "POST":
+            form = AccountPasswordForm(account, request.POST)
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, "Contraseña actualizada correctamente.")
+                return redirect("sendInvoice")
+            else:
+                errors = None
+                for field, field_errors in form.errors.items():
+                    for error in field_errors:
+                        if errors is None:
+                            errors = f"{error}<br>"
+                        else:
+                            errors += f"{error}<br>"
+                messages.error(request, mark_safe(errors))
+        else:
+            form = AccountPasswordForm(account)
 
-    return render(request, "user_password.html", {"form": form, "account": account})
+        return render(
+            request, "user_password.html", {"form": form, "account": account, "change": True}
+        )
 
 
 @owner_required
